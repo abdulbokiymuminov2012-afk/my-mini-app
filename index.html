@@ -77,6 +77,13 @@
         button:active {
             opacity: 0.8;
         }
+        .footer-note {
+            text-align: center;
+            font-size: 12px;
+            color: var(--tg-theme-hint-color, #8793a1);
+            margin-top: 16px;
+            max-width: 400px;
+        }
     </style>
 </head>
 <body>
@@ -86,6 +93,11 @@
     <div class="card">
         <label>Ваше имя</label>
         <input type="text" id="clientName" placeholder="Введите ваше имя...">
+    </div>
+
+    <div class="card">
+        <label>Номер телефона</label>
+        <input type="tel" id="clientPhone" placeholder="+998 90 123 45 67">
     </div>
 
     <div class="card">
@@ -106,17 +118,27 @@
 
     <button id="submitBtn">Отправить заказ</button>
 
+    <div class="footer-note">
+        Все наши услуги бесплатные до 25 ноября.
+    </div>
+
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
         document.getElementById('submitBtn').addEventListener('click', function() {
             let clientName = document.getElementById('clientName').value;
+            let clientPhone = document.getElementById('clientPhone').value;
             let service = document.getElementById('service').value;
             let details = document.getElementById('details').value;
 
             if (!clientName.trim()) {
                 alert('Пожалуйста, введите ваше имя');
+                return;
+            }
+
+            if (!clientPhone.trim()) {
+                alert('Пожалуйста, введите номер телефона');
                 return;
             }
 
@@ -130,10 +152,11 @@
             let userId = user.id ? user.id : 'неизвестно';
 
             let text = `🔥 Новый заказ услуг!\n\n` +
-                       `👤 Имя от клиента: ${clientName}\n` +
+                       `👤 Имя: ${clientName}\n` +
+                       `📞 Телефон: ${clientPhone}\n` +
                        `📌 Услуга: ${service}\n` +
                        `💬 Детали: ${details}\n\n` +
-                       `🔗 Telegram аккаунт: ${userUsername}\n` +
+                       `🔗 Telegram: ${userUsername}\n` +
                        `🆔 ID: ${userId}`;
 
             let botToken = '8782008755:AAGQ-S9KhEoMxf7M9LDzrAq_PNNdae5lVOI';
