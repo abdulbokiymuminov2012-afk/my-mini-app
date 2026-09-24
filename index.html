@@ -1,110 +1,166 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Заказ услуг</title>
-  <script src="https://telegram.org/js/telegram-web-app.js"></script>
-  <style>
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, sans-serif;
-      background-color: var(--tg-theme-bg-color, #ffffff);
-      color: var(--tg-theme-text-color, #000000);
-      padding: 20px;
-      margin: 0;
-    }
-    h2 { text-align: center; margin-bottom: 20px; }
-    .form-group { margin-bottom: 15px; }
-    label { display: block; margin-bottom: 5px; font-weight: bold; }
-    input, select {
-      width: 100%;
-      padding: 12px;
-      border: 1px solid #ccc;
-      border-radius: 8px;
-      box-sizing: border-box;
-      font-size: 16px;
-    }
-    button {
-      width: 100%;
-      padding: 14px;
-      background-color: var(--tg-theme-button-color, #0088cc);
-      color: var(--tg-theme-button-text-color, #ffffff);
-      border: none;
-      border-radius: 8px;
-      font-size: 16px;
-      font-weight: bold;
-      cursor: pointer;
-      margin-top: 10px;
-    }
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Заказ услуг и дизайна</title>
+    <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            background-color: var(--tg-theme-bg-color, #18222d);
+            color: var(--tg-theme-text-color, #ffffff);
+            margin: 0;
+            padding: 16px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            font-size: 20px;
+        }
+        .card {
+            background: var(--tg-theme-secondary-bg-color, #232e3c);
+            padding: 14px;
+            border-radius: 12px;
+            width: 100%;
+            max-width: 400px;
+            margin-bottom: 12px;
+            box-sizing: border-box;
+        }
+        label {
+            display: block;
+            margin-bottom: 6px;
+            font-weight: 600;
+            font-size: 13px;
+            color: var(--tg-theme-hint-color, #8793a1);
+        }
+        input, select, textarea {
+            width: 100%;
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            background: var(--tg-theme-bg-color, #18222d);
+            color: var(--tg-theme-text-color, #ffffff);
+            font-size: 15px;
+            box-sizing: border-box;
+            outline: none;
+        }
+        select {
+            appearance: none;
+            -webkit-appearance: none;
+            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
+            background-repeat: no-repeat;
+            background-position: right 12px center;
+            background-size: 20px;
+            cursor: pointer;
+        }
+        textarea {
+            resize: vertical;
+            height: 90px;
+        }
+        button {
+            width: 100%;
+            max-width: 400px;
+            background-color: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
+            border: none;
+            padding: 14px;
+            border-radius: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+        button:active {
+            opacity: 0.8;
+        }
+    </style>
 </head>
 <body>
 
-  <h2>Оформить заказ</h2>
+    <h2>Заказ услуг и дизайна</h2>
 
-  <form id="orderForm">
-    <div class="form-group">
-      <label for="name">Ваше имя:</label>
-      <input type="text" id="name" placeholder="Введите имя" required>
+    <div class="card">
+        <label>Ваше имя</label>
+        <input type="text" id="clientName" placeholder="Введите ваше имя...">
     </div>
 
-    <div class="form-group">
-      <label for="phone">Номер телефона:</label>
-      <input type="tel" id="phone" placeholder="+998 90 123 45 67" required>
+    <div class="card">
+        <label>Выберите услугу</label>
+        <select id="service">
+            <option value="Презентация">Презентация</option>
+            <option value="Логотип / Аватарка">Логотип / Аватарка</option>
+            <option value="Эссе / Текстовая работа">Эссе / Текстовая работа</option>
+            <option value="Карточка товара / Инфографика">Карточка товара / Инфографика</option>
+            <option value="Флаер или Буклет">Флаер или Буклет</option>
+        </select>
     </div>
 
-    <div class="form-group">
-      <label for="service">Выберите услугу:</label>
-      <select id="service">
-        <option value="Дизайн">Дизайн</option>
-        <option value="Разработка">Разработка</option>
-        <option value="Консультация">Консультация</option>
-      </select>
+    <div class="card">
+        <label>Детали заказа</label>
+        <textarea id="details" placeholder="Например: сколько слайдов, какая тема, что нужно и не нужно делать..."></textarea>
     </div>
 
-    <button type="submit">Отправить заказ</button>
-  </form>
+    <button id="submitBtn">Отправить заказ</button>
 
-  <script>
-    const tg = window.Telegram ? window.Telegram.WebApp : null;
-    if (tg) tg.expand();
+    <script>
+        let tg = window.Telegram.WebApp;
+        tg.expand();
 
-    const BOT_TOKEN = '8782008755:AAGQ-S9KhEoMxf7M9LDzrAq_PNNdae5lVOI';
-    const CHAT_ID = '5958507555';
+        document.getElementById('submitBtn').addEventListener('click', function() {
+            let clientName = document.getElementById('clientName').value;
+            let service = document.getElementById('service').value;
+            let details = document.getElementById('details').value;
 
-    document.getElementById('orderForm').addEventListener('submit', async function(e) {
-      e.preventDefault();
+            if (!clientName.trim()) {
+                alert('Пожалуйста, введите ваше имя');
+                return;
+            }
 
-      const name = document.getElementById('name').value;
-      const phone = document.getElementById('phone').value;
-      const service = document.getElementById('service').value;
+            if (!details.trim()) {
+                alert('Пожалуйста, опишите детали заказа');
+                return;
+            }
 
-      const message = `📦 *Новый заказ!*\n\n` +
-                      `👤 *Имя:* ${name}\n` +
-                      `📞 *Телефон:* ${phone}\n` +
-                      `🛠 *Услуга:* ${service}`;
+            let user = tg.initDataUnsafe && tg.initDataUnsafe.user ? tg.initDataUnsafe.user : {};
+            let userUsername = user.username ? '@' + user.username : 'нет юзернейма';
+            let userId = user.id ? user.id : 'неизвестно';
 
-      try {
-        const response = await fetch(`https://api.telegram.org/bot${BOT_TOKEN}/sendMessage`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            chat_id: CHAT_ID,
-            text: message,
-            parse_mode: 'Markdown'
-          })
+            let text = `🔥 Новый заказ услуг!\n\n` +
+                       `👤 Имя от клиента: ${clientName}\n` +
+                       `📌 Услуга: ${service}\n` +
+                       `💬 Детали: ${details}\n\n` +
+                       `🔗 Telegram аккаунт: ${userUsername}\n` +
+                       `🆔 ID: ${userId}`;
+
+            let botToken = '8782008755:AAGQ-S9KhEoMxf7M9LDzrAq_PNNdae5lVOI';
+            let chatId = '5958507555';
+
+            fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify({
+                    chat_id: chatId,
+                    text: text
+                })
+            })
+            .then(response => {
+                if (response.ok) {
+                    alert('Заказ успешно отправлен! Скоро с вами свяжутся.');
+                    tg.close();
+                } else {
+                    alert('Ошибка при отправке. Попробуйте еще раз.');
+                }
+            })
+            .catch(error => {
+                alert('Ошибка соединения с сервером.');
+            });
         });
-
-        if (response.ok) {
-          alert('Заказ успешно отправлен!');
-          if (tg) tg.close();
-        } else {
-          alert('Ошибка при отправке.');
-        }
-      } catch (error) {
-        alert('Произошла ошибка соединения.');
-      }
-    });
-  </script>
+    </script>
 </body>
 </html>
