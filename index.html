@@ -208,11 +208,11 @@
     <div class="card">
         <label id="labelService">🏷️ Выберите услугу</label>
         <select id="service">
-            <option value="Презентация">📊 Презентация</option>
-            <option value="Логотип / Аватарка">🎨 Логотип / Аватарка</option>
-            <option value="Эссе / Текстовая работа">📝 Эссе / Текстовая работа</option>
-            <option value="Карточка товара / Инфографика">🛍️ Карточка товара / Инфографика</option>
-            <option value="Флаер или Буклет">📑 Флаер или Буклет</option>
+            <option value="Презентация" id="opt1">📊 Презентация</option>
+            <option value="Логотип / Аватарка" id="opt2">🎨 Логотип / Аватарка</option>
+            <option value="Эссе / Текстовая работа" id="opt3">📝 Эссе / Текстовая работа</option>
+            <option value="Карточка товара / Инфографика" id="opt4">🛍️ Карточка товара / Инфографика</option>
+            <option value="Флаер или Буклет" id="opt5">📑 Флаер или Буклет</option>
         </select>
     </div>
 
@@ -252,7 +252,12 @@
                 footer: "Все наши услуги бесплатные до 25 ноября.",
                 success: "Заказ успешно отправлен!",
                 namePlaceholder: "Введите ваше имя...",
-                detailsPlaceholder: "Например: сколько слайдов, какая тема..."
+                detailsPlaceholder: "Например: сколько слайдов, какая тема...",
+                opt1: "📊 Презентация",
+                opt2: "🎨 Логотип / Аватарка",
+                opt3: "📝 Эссе / Текстовая работа",
+                opt4: "🛍️ Карточка товара / Инфографика",
+                opt5: "📑 Флаер или Буклет"
             },
             uz: {
                 title: "Xizmatlar va dizayn buyurtmasi",
@@ -264,7 +269,12 @@
                 footer: "Barcha xizmatlarimiz 25-noyabrgacha bepul.",
                 success: "Buyurtma muvaffaqiyatli yuborildi!",
                 namePlaceholder: "Ismingizni kiriting...",
-                detailsPlaceholder: "Masalan: slaydlar soni, mavzu..."
+                detailsPlaceholder: "Masalan: slaydlar soni, mavzu...",
+                opt1: "📊 Taqdimot (Презентация)",
+                opt2: "🎨 Logotip / Avatarka",
+                opt3: "📝 Esse / Matnli ish",
+                opt4: "🛍️ Mahsulot kartochkasi / Infografika",
+                opt5: "📑 Fleyer yoki Buklet"
             },
             en: {
                 title: "Service & Design Order",
@@ -276,7 +286,12 @@
                 footer: "All our services are free until November 25.",
                 success: "Order successfully sent!",
                 namePlaceholder: "Enter your name...",
-                detailsPlaceholder: "E.g., number of slides, topic..."
+                detailsPlaceholder: "E.g., number of slides, topic...",
+                opt1: "📊 Presentation",
+                opt2: "🎨 Logo / Avatar",
+                opt3: "📝 Essay / Text work",
+                opt4: "🛍️ Product Card / Infographics",
+                opt5: "📑 Flyer or Booklet"
             }
         };
 
@@ -297,6 +312,13 @@
             
             document.getElementById('clientName').placeholder = translations[lang].namePlaceholder;
             document.getElementById('details').placeholder = translations[lang].detailsPlaceholder;
+
+            // Перевод вариантов выбора услуг
+            document.getElementById('opt1').innerText = translations[lang].opt1;
+            document.getElementById('opt2').innerText = translations[lang].opt2;
+            document.getElementById('opt3').innerText = translations[lang].opt3;
+            document.getElementById('opt4').innerText = translations[lang].opt4;
+            document.getElementById('opt5').innerText = translations[lang].opt5;
         }
 
         function submitOrder() {
@@ -344,10 +366,10 @@
                 if (response.ok) {
                     document.getElementById('successModal').style.display = 'flex';
                     
-                    // Окно будет гореть ровно 5 секунд (5000 миллисекунд), после чего приложение закроется
+                    // Окно будет показано ровно 3 секунды, после чего приложение закроется
                     setTimeout(() => {
                         tg.close();
-                    }, 5000);
+                    }, 3000);
                 } else {
                     alert('Ошибка при отправке. Попробуйте еще раз.');
                 }
