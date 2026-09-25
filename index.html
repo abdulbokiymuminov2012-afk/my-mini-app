@@ -344,9 +344,10 @@
                 if (response.ok) {
                     document.getElementById('successModal').style.display = 'flex';
                     
+                    // Окно будет гореть ровно 5 секунд (5000 миллисекунд), после чего приложение закроется
                     setTimeout(() => {
                         tg.close();
-                    }, 2000);
+                    }, 5000);
                 } else {
                     alert('Ошибка при отправке. Попробуйте еще раз.');
                 }
