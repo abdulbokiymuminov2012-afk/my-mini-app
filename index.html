@@ -5,9 +5,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заказ услуг и дизайна</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
+        @font-face {
+            font-family: 'Peace Sans';
+            src: local('Peace Sans'), local('PeaceSans');
+        }
         body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+            font-family: 'Peace Sans', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
             background-color: var(--tg-theme-bg-color, #18222d);
             color: var(--tg-theme-text-color, #ffffff);
             margin: 0;
@@ -19,28 +24,58 @@
         h2 {
             text-align: center;
             margin-bottom: 20px;
-            font-size: 20px;
+            font-size: 22px;
+            letter-spacing: 0.5px;
+        }
+        /* Блок выбора языка */
+        .lang-container {
+            display: flex;
+            gap: 8px;
+            margin-bottom: 20px;
+            width: 100%;
+            max-width: 400px;
+            justify-content: center;
+        }
+        .lang-btn {
+            flex: 1;
+            padding: 10px;
+            border-radius: 16px;
+            border: 2px solid rgba(255, 255, 255, 0.1);
+            background: var(--tg-theme-secondary-bg-color, #232e3c);
+            color: var(--tg-theme-text-color, #ffffff);
+            font-weight: 800;
+            cursor: pointer;
+            text-align: center;
+            transition: 0.2s;
+        }
+        .lang-btn.active {
+            border-color: var(--tg-theme-button-color, #2481cc);
+            background: var(--tg-theme-button-color, #2481cc);
+            color: var(--tg-theme-button-text-color, #ffffff);
         }
         .card {
             background: var(--tg-theme-secondary-bg-color, #232e3c);
-            padding: 14px;
-            border-radius: 12px;
+            padding: 16px;
+            border-radius: 20px;
             width: 100%;
             max-width: 400px;
-            margin-bottom: 12px;
+            margin-bottom: 14px;
             box-sizing: border-box;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         label {
-            display: block;
-            margin-bottom: 6px;
-            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            margin-bottom: 8px;
+            font-weight: 700;
             font-size: 13px;
             color: var(--tg-theme-hint-color, #8793a1);
         }
         input, select, textarea {
             width: 100%;
-            padding: 12px;
-            border-radius: 8px;
+            padding: 14px;
+            border-radius: 14px;
             border: 1px solid rgba(255, 255, 255, 0.1);
             background: var(--tg-theme-bg-color, #18222d);
             color: var(--tg-theme-text-color, #ffffff);
@@ -49,32 +84,27 @@
             outline: none;
         }
         select {
-            appearance: none;
-            -webkit-appearance: none;
-            background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23ffffff'%3e%3cpath d='M7 10l5 5 5-5z'/%3e%3c/svg%3e");
-            background-repeat: no-repeat;
-            background-position: right 12px center;
-            background-size: 20px;
             cursor: pointer;
         }
         textarea {
             resize: vertical;
             height: 90px;
         }
-        button {
+        button.submit-btn {
             width: 100%;
             max-width: 400px;
             background-color: var(--tg-theme-button-color, #2481cc);
             color: var(--tg-theme-button-text-color, #ffffff);
             border: none;
-            padding: 14px;
-            border-radius: 10px;
+            padding: 16px;
+            border-radius: 16px;
             font-size: 16px;
-            font-weight: 600;
+            font-weight: 900;
             cursor: pointer;
             margin-top: 10px;
+            box-shadow: 0 6px 20px rgba(36, 129, 204, 0.4);
         }
-        button:active {
+        button.submit-btn:active {
             opacity: 0.8;
         }
         .footer-note {
@@ -83,67 +113,188 @@
             color: var(--tg-theme-hint-color, #8793a1);
             margin-top: 16px;
             max-width: 400px;
+            font-weight: 700;
+        }
+
+        /* Модальное окно успеха */
+        #successModal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.7);
+            backdrop-filter: blur(8px);
+            z-index: 1000;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+        }
+        .modal-content {
+            background: var(--tg-theme-secondary-bg-color, #232e3c);
+            padding: 30px;
+            border-radius: 24px;
+            text-align: center;
+            max-width: 300px;
+            width: 85%;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+            animation: popUp 0.3s ease-out;
+        }
+        @keyframes popUp {
+            0% { transform: scale(0.7); opacity: 0; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+        .modal-img {
+            width: 90px;
+            height: 90px;
+            margin-bottom: 16px;
+            animation: bounce 0.6s infinite alternate;
+        }
+        @keyframes bounce {
+            0% { transform: translateY(0); }
+            100% { transform: translateY(-8px); }
+        }
+        .modal-text {
+            font-size: 18px;
+            font-weight: 900;
+            color: var(--tg-theme-text-color, #ffffff);
         }
     </style>
 </head>
 <body>
 
-    <h2>Заказ услуг и дизайна</h2>
+    <!-- Переключатель языка -->
+    <div class="lang-container">
+        <button class="lang-btn active" onclick="setLanguage('ru')">🇷🇺 RU</button>
+        <button class="lang-btn" onclick="setLanguage('uz')">🇺🇿 UZ</button>
+        <button class="lang-btn" onclick="setLanguage('en')">🇬🇧 EN</button>
+    </div>
+
+    <h2 id="mainTitle">Заказ услуг и дизайна</h2>
 
     <div class="card">
-        <label>Ваше имя</label>
+        <label id="labelName">👤 Ваше имя</label>
         <input type="text" id="clientName" placeholder="Введите ваше имя...">
     </div>
 
     <div class="card">
-        <label>Номер телефона</label>
+        <label id="labelPhone">📞 Номер телефона</label>
         <input type="tel" id="clientPhone" placeholder="+998 90 123 45 67">
     </div>
 
     <div class="card">
-        <label>Выберите услугу</label>
+        <label id="labelService">🏷️ Выберите услугу</label>
         <select id="service">
-            <option value="Презентация">Презентация</option>
-            <option value="Логотип / Аватарка">Логотип / Аватарка</option>
-            <option value="Эссе / Текстовая работа">Эссе / Текстовая работа</option>
-            <option value="Карточка товара / Инфографика">Карточка товара / Инфографика</option>
-            <option value="Флаер или Буклет">Флаер или Буклет</option>
+            <option value="Презентация">📊 Презентация</option>
+            <option value="Логотип / Аватарка">🎨 Логотип / Аватарка</option>
+            <option value="Эссе / Текстовая работа">📝 Эссе / Текстовая работа</option>
+            <option value="Карточка товара / Инфографика">🛍️ Карточка товара / Инфографика</option>
+            <option value="Флаер или Буклет">📑 Флаер или Буклет</option>
         </select>
     </div>
 
     <div class="card">
-        <label>Детали заказа</label>
-        <textarea id="details" placeholder="Например: сколько слайдов, какая тема, что нужно и не нужно делать..."></textarea>
+        <label id="labelDetails">💬 Детали заказа</label>
+        <textarea id="details" placeholder="Например: сколько слайдов, какая тема..."></textarea>
     </div>
 
-    <button id="submitBtn">Отправить заказ</button>
+    <button class="submit-btn" id="submitBtn" onclick="submitOrder()">Отправить заказ</button>
 
-    <div class="footer-note">
+    <div class="footer-note" id="footerNote">
         Все наши услуги бесплатные до 25 ноября.
+    </div>
+
+    <!-- Модальное окно успеха с 3D галочкой -->
+    <div id="successModal">
+        <div class="modal-content">
+            <img src="https://i.ibb.co/674482N/image.png" alt="Успешно" class="modal-img" id="successIcon">
+            <div class="modal-text" id="modalSuccessText">Заказ успешно отправлен!</div>
+        </div>
     </div>
 
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
-        document.getElementById('submitBtn').addEventListener('click', function() {
+        let currentLang = 'ru';
+
+        const translations = {
+            ru: {
+                title: "Заказ услуг и дизайна",
+                name: "👤 Ваше имя",
+                phone: "📞 Номер телефона",
+                service: "🏷️ Выберите услугу",
+                details: "💬 Детали заказа",
+                submit: "Отправить заказ",
+                footer: "Все наши услуги бесплатные до 25 ноября.",
+                success: "Заказ успешно отправлен!",
+                namePlaceholder: "Введите ваше имя...",
+                detailsPlaceholder: "Например: сколько слайдов, какая тема..."
+            },
+            uz: {
+                title: "Xizmatlar va dizayn buyurtmasi",
+                name: "👤 Ismingiz",
+                phone: "📞 Telefon raqami",
+                service: "🏷️ Xizmatni tanlang",
+                details: "💬 Buyurtma tafsilotlari",
+                submit: "Buyurtmani yuborish",
+                footer: "Barcha xizmatlarimiz 25-noyabrgacha bepul.",
+                success: "Buyurtma muvaffaqiyatli yuborildi!",
+                namePlaceholder: "Ismingizni kiriting...",
+                detailsPlaceholder: "Masalan: slaydlar soni, mavzu..."
+            },
+            en: {
+                title: "Service & Design Order",
+                name: "👤 Your Name",
+                phone: "📞 Phone Number",
+                service: "🏷️ Select Service",
+                details: "💬 Order Details",
+                submit: "Submit Order",
+                footer: "All our services are free until November 25.",
+                success: "Order successfully sent!",
+                namePlaceholder: "Enter your name...",
+                detailsPlaceholder: "E.g., number of slides, topic..."
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            
+            document.querySelectorAll('.lang-btn').forEach(btn => btn.classList.remove('active'));
+            event.target.classList.add('active');
+
+            document.getElementById('mainTitle').innerText = translations[lang].title;
+            document.getElementById('labelName').innerText = translations[lang].name;
+            document.getElementById('labelPhone').innerText = translations[lang].phone;
+            document.getElementById('labelService').innerText = translations[lang].service;
+            document.getElementById('labelDetails').innerText = translations[lang].details;
+            document.getElementById('submitBtn').innerText = translations[lang].submit;
+            document.getElementById('footerNote').innerText = translations[lang].footer;
+            document.getElementById('modalSuccessText').innerText = translations[lang].success;
+            
+            document.getElementById('clientName').placeholder = translations[lang].namePlaceholder;
+            document.getElementById('details').placeholder = translations[lang].detailsPlaceholder;
+        }
+
+        function submitOrder() {
             let clientName = document.getElementById('clientName').value;
             let clientPhone = document.getElementById('clientPhone').value;
             let service = document.getElementById('service').value;
             let details = document.getElementById('details').value;
 
             if (!clientName.trim()) {
-                alert('Пожалуйста, введите ваше имя');
+                alert(currentLang === 'uz' ? 'Iltimos, ismingizni kiriting' : currentLang === 'en' ? 'Please enter your name' : 'Пожалуйста, введите ваше имя');
                 return;
             }
 
             if (!clientPhone.trim()) {
-                alert('Пожалуйста, введите номер телефона');
+                alert(currentLang === 'uz' ? 'Iltimos, telefon raqamingizni kiriting' : currentLang === 'en' ? 'Please enter your phone number' : 'Пожалуйста, введите номер телефона');
                 return;
             }
 
             if (!details.trim()) {
-                alert('Пожалуйста, опишите детали заказа');
+                alert(currentLang === 'uz' ? 'Iltimos, buyurtma tafsilotlarini yozing' : currentLang === 'en' ? 'Please describe order details' : 'Пожалуйста, опишите детали заказа');
                 return;
             }
 
@@ -151,7 +302,7 @@
             let userUsername = user.username ? '@' + user.username : 'нет юзернейма';
             let userId = user.id ? user.id : 'неизвестно';
 
-            let text = `🔥 Новый заказ услуг!\n\n` +
+            let text = `🔥 Новый заказ услуг (${currentLang.toUpperCase()})!\n\n` +
                        `👤 Имя: ${clientName}\n` +
                        `📞 Телефон: ${clientPhone}\n` +
                        `📌 Услуга: ${service}\n` +
@@ -164,26 +315,24 @@
 
             fetch(`https://api.telegram.org/bot${botToken}/sendMessage`, {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify({
-                    chat_id: chatId,
-                    text: text
-                })
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({ chat_id: chatId, text: text })
             })
             .then(response => {
                 if (response.ok) {
-                    alert('Заказ успешно отправлен! Скоро с вами свяжутся.');
-                    tg.close();
+                    document.getElementById('successModal').style.display = 'flex';
+                    
+                    setTimeout(() => {
+                        tg.close();
+                    }, 2000);
                 } else {
                     alert('Ошибка при отправке. Попробуйте еще раз.');
                 }
             })
-            .catch(error => {
+            .catch(error =>5 {
                 alert('Ошибка соединения с сервером.');
             });
-        });
+        }
     </script>
 </body>
 </html>
