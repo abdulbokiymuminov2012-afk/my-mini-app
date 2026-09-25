@@ -145,17 +145,38 @@
             0% { transform: scale(0.7); opacity: 0; }
             100% { transform: scale(1); opacity: 1; }
         }
-        .modal-img {
-            width: 90px;
-            height: 90px;
-            margin-bottom: 16px;
-            object-fit: contain;
+
+        /* Крутая 3D круглая иконка галочки на чистом CSS */
+        .badge-3d {
+            width: 85px;
+            height: 85px;
+            margin: 0 auto 16px auto;
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            border-radius: 50%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2), inset 0 4px 6px rgba(255,255,255,0.3);
             animation: bounce 0.6s infinite alternate;
         }
+        .badge-3d::after {
+            content: '';
+            display: block;
+            width: 24px;
+            height: 44px;
+            border: solid white;
+            border-width: 0 7px 7px 0;
+            transform: rotate(45deg);
+            margin-top: -6px;
+            margin-right: 3px;
+            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+        }
+
         @keyframes bounce {
             0% { transform: translateY(0); }
             100% { transform: translateY(-8px); }
         }
+
         .modal-text {
             font-size: 18px;
             font-weight: 900;
@@ -206,10 +227,10 @@
         Все наши услуги бесплатные до 25 ноября.
     </div>
 
-    <!-- Модальное окно успеха -->
+    <!-- Модальное окно успеха с объемной 3D иконкой -->
     <div id="successModal">
         <div class="modal-content">
-            <img src="https://i.ibb.co/601r71x3/image_1afd9e.png" alt="Успешно" class="modal-img" id="successIcon">
+            <div class="badge-3d"></div>
             <div class="modal-text" id="modalSuccessText">Заказ успешно отправлен!</div>
         </div>
     </div>
