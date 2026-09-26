@@ -146,30 +146,14 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Крутая 3D круглая иконка галочки на чистом CSS */
-        .badge-3d {
-            width: 85px;
-            height: 85px;
+        /* 3D стикер-картинка */
+        .sticker-3d {
+            width: 90px;
+            height: 90px;
             margin: 0 auto 16px auto;
-            background: linear-gradient(135deg, #2ecc71, #27ae60);
-            border-radius: 50%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            box-shadow: 0 10px 20px rgba(46, 204, 113, 0.4), inset 0 -4px 6px rgba(0,0,0,0.2), inset 0 4px 6px rgba(255,255,255,0.3);
+            object-fit: contain;
             animation: bounce 0.6s infinite alternate;
-        }
-        .badge-3d::after {
-            content: '';
-            display: block;
-            width: 24px;
-            height: 44px;
-            border: solid white;
-            border-width: 0 7px 7px 0;
-            transform: rotate(45deg);
-            margin-top: -6px;
-            margin-right: 3px;
-            filter: drop-shadow(0 2px 2px rgba(0,0,0,0.15));
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.2));
         }
 
         @keyframes bounce {
@@ -227,10 +211,11 @@
         Все наши услуги бесплатные до 25 ноября.
     </div>
 
-    <!-- Модальное окно успеха с объемной 3D иконкой -->
+    <!-- Модальное окно успеха с 3D стикером -->
     <div id="successModal">
         <div class="modal-content">
-            <div class="badge-3d"></div>
+            <!-- Надежная 3D иконка-стикер в стиле Telegram -->
+            <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2705/512.webp" alt="Success" class="sticker-3d">
             <div class="modal-text" id="modalSuccessText">Заказ успешно отправлен!</div>
         </div>
     </div>
@@ -313,7 +298,6 @@
             document.getElementById('clientName').placeholder = translations[lang].namePlaceholder;
             document.getElementById('details').placeholder = translations[lang].detailsPlaceholder;
 
-            // Перевод вариантов выбора услуг
             document.getElementById('opt1').innerText = translations[lang].opt1;
             document.getElementById('opt2').innerText = translations[lang].opt2;
             document.getElementById('opt3').innerText = translations[lang].opt3;
@@ -366,7 +350,7 @@
                 if (response.ok) {
                     document.getElementById('successModal').style.display = 'flex';
                     
-                    // Окно будет показано ровно 3 секунды, после чего приложение закроется
+                    // Закрытие ровно через 3 секунды
                     setTimeout(() => {
                         tg.close();
                     }, 3000);
