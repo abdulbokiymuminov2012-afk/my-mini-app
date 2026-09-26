@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заказ услуг и дизайна</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <!-- Библиотека для красивых анимированных стикеров (Lottie) -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
@@ -14,7 +13,9 @@
             src: local('Peace Sans'), local('PeaceSans');
         }
         body {
-            font-family: 'Peace Sans', 'Montserrat', -apple-system, BlinkMacSystemFont, sans-serif;
+            /* Подключен фирменный шрифт Apple (San Francisco) первым в списке */
+            font-family: -apple-system, "SF Pro Display", "SF Pro Text", 'Peace Sans', 'Montserrat', sans-serif;
+            -webkit-font-smoothing: antialiased;
             background-color: var(--tg-theme-bg-color, #18222d);
             color: var(--tg-theme-text-color, #ffffff);
             margin: 0;
@@ -84,6 +85,7 @@
             font-size: 15px;
             box-sizing: border-box;
             outline: none;
+            font-family: inherit;
         }
         select {
             cursor: pointer;
@@ -105,6 +107,7 @@
             cursor: pointer;
             margin-top: 10px;
             box-shadow: 0 6px 20px rgba(36, 129, 204, 0.4);
+            font-family: inherit;
         }
         button.submit-btn:active {
             opacity: 0.8;
@@ -148,7 +151,6 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Контейнер под анимированный стикер Telegram */
         #lottie-sticker {
             width: 100px;
             height: 100px;
@@ -205,7 +207,7 @@
         Все наши услуги бесплатные до 25 ноября.
     </div>
 
-    <!-- Модальное окно успеха с анимированным стикером -->
+    <!-- Модальное окно успеха -->
     <div id="successModal">
         <div class="modal-content">
             <div id="lottie-sticker"></div>
@@ -219,13 +221,12 @@
 
         let currentLang = 'ru';
 
-        // Запуск анимированного стикера галочки
         let anim = lottie.loadAnimation({
             container: document.getElementById('lottie-sticker'),
             renderer: 'svg',
             loop: true,
             autoplay: true,
-            path: 'https://assets2.lottiefiles.com/packages/lf20_s2lryxtd.json' // Плавный стикер успеха
+            path: 'https://assets2.lottiefiles.com/packages/lf20_s2lryxtd.json'
         });
 
         const translations = {
@@ -352,7 +353,6 @@
                 if (response.ok) {
                     document.getElementById('successModal').style.display = 'flex';
                     
-                    // Закрытие ровно через 3 секунды
                     setTimeout(() => {
                         tg.close();
                     }, 3000);
