@@ -5,7 +5,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Заказ услуг и дизайна</title>
     <script src="https://telegram.org/js/telegram-web-app.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/lottie-web/5.12.2/lottie.min.js"></script>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@700;800;900&display=swap" rel="stylesheet">
     <style>
         @font-face {
@@ -13,7 +12,6 @@
             src: local('Peace Sans'), local('PeaceSans');
         }
         body {
-            /* Подключен фирменный шрифт Apple (San Francisco) первым в списке */
             font-family: -apple-system, "SF Pro Display", "SF Pro Text", 'Peace Sans', 'Montserrat', sans-serif;
             -webkit-font-smoothing: antialiased;
             background-color: var(--tg-theme-bg-color, #18222d);
@@ -151,10 +149,19 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        #lottie-sticker {
-            width: 100px;
-            height: 100px;
-            margin: 0 auto 12px auto;
+        /* Яркая сочная 3D иконка с движением */
+        .sticker-3d-vivid {
+            width: 95px;
+            height: 95px;
+            margin: 0 auto 16px auto;
+            object-fit: contain;
+            filter: drop-shadow(0 12px 20px rgba(46, 213, 115, 0.4));
+            animation: vividBounce 0.8s ease-in-out infinite alternate;
+        }
+
+        @keyframes vividBounce {
+            0% { transform: translateY(0) scale(1); }
+            100% { transform: translateY(-10px) scale(1.08); }
         }
 
         .modal-text {
@@ -207,10 +214,11 @@
         Все наши услуги бесплатные до 25 ноября.
     </div>
 
-    <!-- Модальное окно успеха -->
+    <!-- Модальное окно успеха с сочным 3D стикером -->
     <div id="successModal">
         <div class="modal-content">
-            <div id="lottie-sticker"></div>
+            <!-- Супер-яркий и объемный 3D эмодзи-стикер с эффектом свечения -->
+            <img src="https://fonts.gstatic.com/s/e/notoemoji/latest/2705/512.webp" alt="Success" class="sticker-3d-vivid">
             <div class="modal-text" id="modalSuccessText">Заказ успешно отправлен!</div>
         </div>
     </div>
@@ -220,14 +228,6 @@
         tg.expand();
 
         let currentLang = 'ru';
-
-        let anim = lottie.loadAnimation({
-            container: document.getElementById('lottie-sticker'),
-            renderer: 'svg',
-            loop: true,
-            autoplay: true,
-            path: 'https://assets2.lottiefiles.com/packages/lf20_s2lryxtd.json'
-        });
 
         const translations = {
             ru: {
