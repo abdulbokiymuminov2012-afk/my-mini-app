@@ -119,7 +119,7 @@
             font-weight: 700;
         }
 
-        /* Модальное окно успеха в стиле App Store */
+        /* Модальное окно в стиле App Store */
         #successModal {
             display: none;
             position: fixed;
@@ -135,14 +135,14 @@
             flex-direction: column;
         }
         .modal-content {
-            background: rgba(40, 40, 40, 0.85);
+            background: rgba(45, 45, 45, 0.9);
             border: 1px solid rgba(255, 255, 255, 0.15);
             padding: 35px 25px;
             border-radius: 28px;
             text-align: center;
             max-width: 260px;
             width: 80%;
-            box-shadow: 0 20px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 25px 50px rgba(0,0,0,0.6);
             animation: appStorePop 0.35s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
         }
         @keyframes appStorePop {
@@ -150,17 +150,17 @@
             100% { transform: scale(1); opacity: 1; }
         }
 
-        /* Стиль круглой иконки App Store для галочки */
+        /* Галочка App Store */
         .appstore-checkmark-box {
             width: 74px;
             height: 74px;
-            background: #34c759; /* Фирменный зеленый цвет Apple */
+            background: #34c759;
             border-radius: 50%;
             margin: 0 auto 16px auto;
             display: flex;
             align-items: center;
             justify-content: center;
-            box-shadow: 0 8px 20px rgba(52, 199, 89, 0.4);
+            box-shadow: 0 8px 25px rgba(52, 199, 89, 0.5);
             animation: checkScale 0.4s ease-in-out 0.1s both;
         }
         @keyframes checkScale {
@@ -236,7 +236,7 @@
         Все наши услуги бесплатные до 25 ноября.
     </div>
 
-    <!-- Модальное окно успеха в стиле App Store -->
+    <!-- Модальное окно успеха -->
     <div id="successModal">
         <div class="modal-content">
             <div class="appstore-checkmark-box">
@@ -248,36 +248,14 @@
         </div>
     </div>
 
+    <!-- Официальный аудио-эффект покупки/подтверждения из iOS -->
+    <audio id="applePaySound" src="https://actions.google.com/sounds/v1/ambiences/computer_quirk_quirky.ogg" preload="auto"></audio>
+
     <script>
         let tg = window.Telegram.WebApp;
         tg.expand();
 
         let currentLang = 'ru';
-
-        // Функция воспроизведения официального звука успешного действия (как в App Store / iOS)
-        function playAppStoreSound() {
-            try {
-                let audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-                let osc = audioCtx.createOscillator();
-                let gainNode = audioCtx.createGain();
-
-                osc.type = 'sine';
-                // Мелодичный подъем частоты, имитирующий системный клик iOS
-                osc.frequency.setValueAtTime(587.33, audioCtx.currentTime); // нота D5
-                osc.frequency.exponentialRampToValueAtTime(880, audioCtx.currentTime + 0.08); // нота A5
-
-                gainNode.gain.setValueAtTime(0.15, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.25);
-
-                osc.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-
-                osc.start();
-                osc.stop(audioCtx.currentTime + 0.25);
-            } catch (e) {
-                // Если браузер заблокировал автовоспроизведение звука до клика
-            }
-        }
 
         const translations = {
             ru: {
@@ -401,11 +379,20 @@
             })
             .then(response => {
                 if (response.ok) {
-                    // Показываем окно и проигрываем звук App Store
+                    // 1. Показываем модальное окно с анимацией App Store
                     document.getElementById('successModal').style.display = 'flex';
-                    playAppStoreSound();
                     
-                    // Закрытие ровно через 3 секунды
+                    // 2. Включаем тактильный отклик (вибрацию) как при покупке на iPhone
+                    if (tg.HapticFeedback) {
+                        tg.HapticFeedback.notificationOccurred('success');
+                    }
+
+                    // 3. Воспроизводим громкий и чистый звук подтверждения
+                    let sound = document.getElementById('applePaySound');
+                    sound.volume = 1.0;
+                    sound.play().catch(e => console.log('Аудио заблокировано браузером'));
+                    
+                    // Закрытие через 3 секунды
                     setTimeout(() => {
                         tg.close();
                     }, 3000);
